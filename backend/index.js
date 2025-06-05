@@ -13,7 +13,10 @@ app.use(express.json());
 
 // Routes
 const tasksRouter = require("./routes/tasks");
-app.use("/api/tasks", tasksRouter);
+app.use( "/api/tasks", tasksRouter );
+
+const timeLogsRouter = require("./routes/timelogs");
+app.use("/api/timelogs", timeLogsRouter);
 
 // MongoDB Connection
 mongoose
