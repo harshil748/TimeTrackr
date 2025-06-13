@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Task = require("../models/Task");
+const authMiddleware = require( "../middleware/auth" );
 
 // Create a new task
 router.post( "/", async ( req, res ) => {
@@ -16,7 +17,7 @@ router.post( "/", async ( req, res ) => {
 });
 
 // Get all tasks for a specific user
-router.get("/:userId", async (req, res) => {
+router.get("/:userId", authMiddleware,async (req, res) => {
 	try {
 		const tasks = await Task.find({ user: req.params.userId }).sort({
 			createdAt: -1,
