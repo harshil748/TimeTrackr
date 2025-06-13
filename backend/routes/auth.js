@@ -1,9 +1,9 @@
-const express = require("express");
+const express = require( "express" );
+const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
-
-const router = express.Router();
+console.log("✅ auth.js loaded");
 const JWT_SECRET = process.env.JWT_SECRET || "supersecret";
 
 // Register
@@ -50,6 +50,11 @@ router.post( "/login", async ( req, res ) => {
 	} catch (err) {
 		res.status(500).json({ error: err.message });
 	}
+} );
+
+router.get("/test", (req, res) => {
+	console.log("📩 /api/auth/test hit");
+	res.send("Auth route works!");
 });
 
 module.exports = router;
