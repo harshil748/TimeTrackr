@@ -1,4 +1,4 @@
-const express = require( "express" );
+const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -7,8 +7,8 @@ console.log("✅ auth.js loaded");
 const JWT_SECRET = process.env.JWT_SECRET || "supersecret";
 
 // Register
-router.post( "/register", async ( req, res ) => {
-    console.log("➡️  POST /register hit");
+router.post("/register", async (req, res) => {
+	console.log("➡️  POST /register hit");
 	try {
 		const { name, email, password } = req.body;
 
@@ -30,8 +30,8 @@ router.post( "/register", async ( req, res ) => {
 });
 
 // Login
-router.post( "/login", async ( req, res ) => {
-    console.log("➡️  POST /login hit");
+router.post("/login", async (req, res) => {
+	console.log("➡️  POST /login hit");
 	try {
 		const { email, password } = req.body;
 
@@ -50,7 +50,7 @@ router.post( "/login", async ( req, res ) => {
 	} catch (err) {
 		res.status(500).json({ error: err.message });
 	}
-} );
+});
 
 router.get("/test", (req, res) => {
 	console.log("📩 /api/auth/test hit");
