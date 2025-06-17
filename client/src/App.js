@@ -1,17 +1,16 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Timer from "./components/Timer";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import Index from "./pages/Index"; // Assuming there's an Index component
 
 function App() {
 	return (
-		<BrowserRouter>
+		<Router>
 			<Routes>
-				<Route path="/" element={<Index />} />
+				<Route path="/" element={<Login />} />
 				<Route path="/dashboard" element={<Dashboard />} />
 			</Routes>
-			<Timer userId="PUT_USER_ID_HERE" taskId="PUT_TASK_ID_HERE" />
-		</BrowserRouter>
+		</Router>
 	);
 }
 
