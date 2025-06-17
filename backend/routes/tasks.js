@@ -3,31 +3,6 @@ const router = express.Router();
 const Task = require("../models/Task");
 const authMiddleware = require("../middleware/auth");
 
-// Create a new task
-router.post("/", async (req, res) => {
-	console.log("POST /api/tasks body:", req.body);
-	try {
-		const { user, title, description } = req.body;
-		const newTask = new Task({ user, title, description });
-		const savedTask = await newTask.save();
-		res.status(201).json(savedTask);
-	} catch (err) {
-		res.status(400).json({ error: err.message });
-	}
-});
-
-// Get all tasks for a specific user
-router.get("/:userId", authMiddleware, async (req, res) => {
-	try {
-		const tasks = await Task.find({ user: req.params.userId }).sort({
-			createdAt: -1,
-		});
-		res.json(tasks);
-	} catch (err) {
-		res.status(500).json({ error: err.message });
-	}
-});
-
 // Update a task
 router.put("/:id", async (req, res) => {
 	try {
@@ -49,6 +24,28 @@ router.delete("/:id", async (req, res) => {
 		res.json({ message: "Task deleted" });
 	} catch (err) {
 		res.status(500).json({ error: err.message });
+	}
+} );
+
+// GET tasks for logged-in user
+router.get("/", authMiddleware, async (req, res) => {
+	try {
+		const tasks = await Task.find({ user: req.user }).sort({ createdAt: -1 });
+		res.json(tasks);
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+	}
+});
+
+// POST new task
+router.post("/", authMiddleware, async (req, res) => {
+	try {
+		const { title, description } = req.body;
+		const newTask = new Task({ user: req.user, title, description });
+		const savedTask = await newTask.save();
+		res.status(201).json(savedTask);
+	} catch (err) {
+		res.status(400).json({ error: err.message });
 	}
 });
 
