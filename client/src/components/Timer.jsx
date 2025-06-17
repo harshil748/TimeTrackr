@@ -1,69 +1,67 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const Timer = ({ userId, taskId }) => {
+const Timer = ({ taskId }) => {
 	const [startTime, setStartTime] = useState(null);
-	const [elapsed, setElapsed] = useState(0);
+	const [duration, setDuration] = useState(0);
+	const [isRunning, setIsRunning] = useState(false);
 	const [intervalId, setIntervalId] = useState(null);
 
-	const formatTime = (sec) => {
-		const mins = Math.floor(sec / 60);
-		const secs = sec % 60;
-		return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
-	};
+	const token = localStorage.getItem("token");
 
-	const start = () => {
+	const handleStart = () => {
+		if (isRunning) return;
 		const now = new Date();
 		setStartTime(now);
+		setIsRunning(true);
 		const id = setInterval(() => {
-			setElapsed((prev) => prev + 1);
+			setDuration((prev) => prev + 1);
 		}, 1000);
 		setIntervalId(id);
 	};
 
-	const pause = () => {
+	const handleStop = async () => {
+		if (!isRunning) return;
 		clearInterval(intervalId);
-	};
-
-	const stop = async () => {
-		clearInterval(intervalId);
+		setIsRunning(false);
 		const endTime = new Date();
+
 		try {
-			await axios.post("http://localhost:5000/api/timelogs", {
-				user: userId,
-				task: taskId,
-				startTime,
-				endTime,
-			});
-			alert("Time log saved!");
+			await axios.post(
+				"http://localhost:5050/api/timelogs",
+				{
+					task: taskId,
+					startTime,
+					endTime,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+			alert("Time log saved successfully!");
 		} catch (err) {
-			alert("Failed to save log.");
+			alert("Failed to save time log.");
+		} finally {
+			setDuration(0);
+			setStartTime(null);
 		}
-		setStartTime(null);
-		setElapsed(0);
-		setIntervalId(null);
 	};
 
 	return (
-		<div className="p-4 rounded-lg bg-white shadow text-center">
-			<h2 className="text-lg font-semibold mb-2">Task Timer</h2>
-			<div className="text-3xl font-mono mb-4">{formatTime(elapsed)}</div>
-			<div className="flex justify-center gap-4">
+		<div className="bg-gray-100 p-3 rounded mt-2">
+			<p className="text-sm font-medium">Timer: {duration}s</p>
+			<div className="mt-2 flex space-x-2">
 				<button
-					onClick={start}
-					className="px-4 py-2 bg-green-500 text-white rounded"
+					onClick={handleStart}
+					className="bg-green-500 text-white px-3 py-1 rounded"
 				>
 					Start
 				</button>
 				<button
-					onClick={pause}
-					className="px-4 py-2 bg-yellow-500 text-white rounded"
-				>
-					Pause
-				</button>
-				<button
-					onClick={stop}
-					className="px-4 py-2 bg-red-500 text-white rounded"
+					onClick={handleStop}
+					className="bg-red-500 text-white px-3 py-1 rounded"
 				>
 					Stop
 				</button>
