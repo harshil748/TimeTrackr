@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Timer from "../components/Timer";
 
 const Dashboard = () => {
 	const [tasks, setTasks] = useState([]);
@@ -92,6 +93,7 @@ const Dashboard = () => {
 							<p className="text-xs text-gray-400 mt-1">
 								Created at: {new Date(task.createdAt).toLocaleString()}
 							</p>
+							<Timer taskId={task._id} />
 						</li>
 					))}
 				</ul>
