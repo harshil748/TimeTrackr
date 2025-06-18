@@ -28,6 +28,7 @@ const COLORS = [
 const Reports = () => {
 	const [data, setData] = useState([]);
 	const [logs, setLogs] = useState([]);
+	const [weekly, setWeekly] = useState([]);
 	const token = localStorage.getItem("token");
 
 	const fetchLogs = async () => {
@@ -50,11 +51,24 @@ const Reports = () => {
 
 			setData(chartData);
 			setLogs(res.data);
+			setWeekly(getWeeklyData(res.data));
 		} catch (err) {
 			console.error("Failed to load logs:", err);
 		}
 	};
+    const getWeeklyData = (logs) => {
+			const dayMap = {};
 
+			logs.forEach((log) => {
+				const date = new Date(log.startTime).toLocaleDateString();
+				dayMap[date] = (dayMap[date] || 0) + log.duration;
+			});
+
+			return Object.entries(dayMap).map(([date, duration]) => ({
+				date,
+				hours: Math.round((duration / 3600) * 100) / 100,
+			}));
+		};
 	useEffect(() => {
 		fetchLogs();
 	}, []);
@@ -102,6 +116,20 @@ const Reports = () => {
 							<Legend />
 							<Tooltip />
 						</PieChart>
+					</ResponsiveContainer>
+				</div>
+
+				{/* Weekly Bar Chart */}
+				<div className="bg-white p-4 rounded shadow">
+					<h2 className="text-lg font-semibold mb-2">Weekly Time Tracker</h2>
+					<ResponsiveContainer width="100%" height={300}>
+						<BarChart data={weekly}>
+							<CartesianGrid strokeDasharray="3 3" />
+							<XAxis dataKey="date" />
+							<YAxis />
+							<Tooltip />
+							<Bar dataKey="hours" fill="#f59e0b" />
+						</BarChart>
 					</ResponsiveContainer>
 				</div>
 
