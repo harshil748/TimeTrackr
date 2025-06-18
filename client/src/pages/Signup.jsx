@@ -30,7 +30,7 @@ const Signup = () => {
 				"user",
 				JSON.stringify({ name: form.name, email: form.email })
 			);
-			navigate("/dashboard");
+			window.location.href = "/dashboard";
 		} catch (err) {
 			setError(err.response?.data?.error || "Signup failed");
 		} finally {
