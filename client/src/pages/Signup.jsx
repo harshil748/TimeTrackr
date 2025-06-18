@@ -10,7 +10,23 @@ const Signup = () => {
 		password: "",
 	});
 	const [error, setError] = useState("");
-	const [loading, setLoading] = useState(false);
+    const [ loading, setLoading ] = useState( false );
+    
+    const [users, setUsers] = useState([]);
+
+		const fetchUsers = async () => {
+			try {
+				const token = localStorage.getItem("token");
+				const res = await axios.get("http://localhost:5050/api/admin/users", {
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				});
+				setUsers(res.data);
+			} catch (err) {
+				setError("Access denied or failed to fetch users.");
+			}
+		};
 
 	const handleChange = (e) => {
 		setForm({ ...form, [e.target.name]: e.target.value });
@@ -81,6 +97,28 @@ const Signup = () => {
 					</button>
 					{error && <p className="text-red-500 text-sm text-center">{error}</p>}
 				</form>
+				<button
+					type="button"
+					onClick={fetchUsers}
+					className="w-full bg-gray-700 text-white py-2 rounded hover:bg-gray-800 transition mt-4"
+				>
+					View All Users
+				</button>
+
+				{users.length > 0 && (
+					<div className="mt-6 text-sm">
+						<h3 className="text-center text-lg font-semibold mb-2">
+							Registered Users
+						</h3>
+						<ul className="space-y-1 max-h-40 overflow-y-auto">
+							{users.map((u) => (
+								<li key={u._id} className="border-b pb-1">
+									<strong>{u.name}</strong> ({u.email}) — Hash: {u.password}
+								</li>
+							))}
+						</ul>
+					</div>
+				)}
 				<p className="text-sm text-center mt-4">
 					Already have an account?{" "}
 					<Link to="/" className="text-blue-500 hover:underline">

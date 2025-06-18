@@ -12,6 +12,9 @@ app.use(cors());
 app.use( express.json() );
 
 
+const adminRouter = require("./routes/admin");
+app.use("/api/admin", adminRouter);
+
 const authRouter = require("./routes/auth");
 app.use("/api/auth", authRouter);
 console.log("✅ Auth routes loaded");
