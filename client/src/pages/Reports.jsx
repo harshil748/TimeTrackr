@@ -8,11 +8,25 @@ import {
 	Tooltip,
 	CartesianGrid,
 	ResponsiveContainer,
+	PieChart,
+	Pie,
+	Cell,
+	Legend,
 } from "recharts";
 import Navbar from "../components/Navbar";
 
+const COLORS = [
+	"#6366f1",
+	"#ec4899",
+	"#facc15",
+	"#22c55e",
+	"#0ea5e9",
+	"#8b5cf6",
+];
+
 const Reports = () => {
 	const [data, setData] = useState([]);
+	const [logs, setLogs] = useState([]);
 	const token = localStorage.getItem("token");
 
 	const fetchLogs = async () => {
@@ -21,20 +35,20 @@ const Reports = () => {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 
-			// Group duration by task
 			const totals = {};
 			res.data.forEach((log) => {
 				const taskName = log.task?.title || "Unknown Task";
 				totals[taskName] = (totals[taskName] || 0) + log.duration;
 			});
 
-			// Convert to chart-friendly format
-			const chartData = Object.entries(totals).map(([task, duration]) => ({
+			const chartData = Object.entries(totals).map(([task, duration], i) => ({
 				task,
-				hours: Math.round((duration / 3600) * 100) / 100, // in hours
+				hours: Math.round((duration / 3600) * 100) / 100,
+				color: COLORS[i % COLORS.length],
 			}));
 
 			setData(chartData);
+			setLogs(res.data);
 		} catch (err) {
 			console.error("Failed to load logs:", err);
 		}
@@ -47,23 +61,83 @@ const Reports = () => {
 	return (
 		<div>
 			<Navbar />
-			<div className="p-6 max-w-4xl mx-auto">
-				<h1 className="text-2xl font-bold mb-4">Time Spent Per Task</h1>
-				{data.length === 0 ? (
-					<p className="text-gray-500">No logs available.</p>
-				) : (
-					<ResponsiveContainer width="100%" height={400}>
+			<div className="p-6 max-w-6xl mx-auto space-y-8">
+				<h1 className="text-2xl font-bold">Time Reports</h1>
+
+				{/* Bar Chart */}
+				<div className="bg-white p-4 rounded shadow">
+					<h2 className="text-lg font-semibold mb-2">Time Spent per Task</h2>
+					<ResponsiveContainer width="100%" height={300}>
 						<BarChart data={data}>
 							<CartesianGrid strokeDasharray="3 3" />
 							<XAxis dataKey="task" />
-							<YAxis
-								label={{ value: "Hours", angle: -90, position: "insideLeft" }}
-							/>
+							<YAxis />
 							<Tooltip />
-							<Bar dataKey="hours" fill="#4f46e5" />
+							<Bar dataKey="hours" fill="#6366f1" />
 						</BarChart>
 					</ResponsiveContainer>
-				)}
+				</div>
+
+				{/* Pie Chart */}
+				<div className="bg-white p-4 rounded shadow">
+					<h2 className="text-lg font-semibold mb-2">
+						Proportional Time Distribution
+					</h2>
+					<ResponsiveContainer width="100%" height={300}>
+						<PieChart>
+							<Pie
+								data={data}
+								dataKey="hours"
+								nameKey="task"
+								cx="50%"
+								cy="50%"
+								outerRadius={100}
+								label
+							>
+								{data.map((entry, index) => (
+									<Cell key={entry.task} fill={entry.color} />
+								))}
+							</Pie>
+							<Legend />
+							<Tooltip />
+						</PieChart>
+					</ResponsiveContainer>
+				</div>
+
+				{/* Logs History */}
+				<div className="bg-white p-4 rounded shadow overflow-x-auto">
+					<h2 className="text-lg font-semibold mb-4">Log History</h2>
+					{logs.length === 0 ? (
+						<p className="text-gray-500">No logs found.</p>
+					) : (
+						<table className="min-w-full text-sm">
+							<thead>
+								<tr className="bg-gray-100 text-left">
+									<th className="p-2">Task</th>
+									<th className="p-2">Start</th>
+									<th className="p-2">End</th>
+									<th className="p-2">Duration</th>
+								</tr>
+							</thead>
+							<tbody>
+								{logs.map((log) => (
+									<tr key={log._id} className="border-b hover:bg-gray-50">
+										<td className="p-2">{log.task?.title || "Untitled"}</td>
+										<td className="p-2">
+											{new Date(log.startTime).toLocaleString()}
+										</td>
+										<td className="p-2">
+											{new Date(log.endTime).toLocaleString()}
+										</td>
+										<td className="p-2">
+											{(log.duration / 60).toFixed(1)} min
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					)}
+				</div>
 			</div>
 		</div>
 	);
