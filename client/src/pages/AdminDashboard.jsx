@@ -26,7 +26,7 @@ const AdminDashboard = () => {
 
 	const fetchTasks = async (userId) => {
 		try {
-			const res = await axios.get(`http://localhost:5050/api/tasks/${userId}`, {
+			const res = await axios.get(`http://localhost:5050/api/tasks/user/${userId}`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			setTasks(res.data);

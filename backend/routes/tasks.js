@@ -1,8 +1,8 @@
+const User = require( "../models/User" );
 const express = require("express");
 const router = express.Router();
 const Task = require("../models/Task");
 const authMiddleware = require("../middleware/auth");
-
 // Update a task
 router.put("/:id", async (req, res) => {
 	try {
@@ -25,12 +25,29 @@ router.delete("/:id", async (req, res) => {
 	} catch (err) {
 		res.status(500).json({ error: err.message });
 	}
-} );
+});
 
 // GET tasks for logged-in user
 router.get("/", authMiddleware, async (req, res) => {
 	try {
 		const tasks = await Task.find({ user: req.user }).sort({ createdAt: -1 });
+		res.json(tasks);
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+	}
+});
+
+// GET tasks of any user (admin only)
+router.get("/user/:userId", authMiddleware, async (req, res) => {
+	try {
+		const admin = await User.findById(req.user);
+		if (!admin || !admin.isAdmin) {
+			return res.status(403).json({ error: "Access denied" });
+		}
+
+		const tasks = await Task.find({ user: req.params.userId }).sort({
+			createdAt: -1,
+		});
 		res.json(tasks);
 	} catch (err) {
 		res.status(500).json({ error: err.message });
