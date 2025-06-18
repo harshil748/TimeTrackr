@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { CSVLink } from "react-csv";
 import {
 	BarChart,
 	Bar,
@@ -107,6 +108,22 @@ const Reports = () => {
 				{/* Logs History */}
 				<div className="bg-white p-4 rounded shadow overflow-x-auto">
 					<h2 className="text-lg font-semibold mb-4">Log History</h2>
+
+					<div className="flex justify-end mb-4">
+						<CSVLink
+							data={logs.map((log) => ({
+								Task: log.task?.title || "Untitled",
+								"Start Time": new Date(log.startTime).toLocaleString(),
+								"End Time": new Date(log.endTime).toLocaleString(),
+								Duration: `${(log.duration / 60).toFixed(1)} min`,
+							}))}
+							filename="timelogs.csv"
+							className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm"
+						>
+							Export as CSV
+						</CSVLink>
+                    </div>
+                    
 					{logs.length === 0 ? (
 						<p className="text-gray-500">No logs found.</p>
 					) : (
