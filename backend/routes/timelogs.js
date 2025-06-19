@@ -31,7 +31,10 @@ router.post("/", authMiddleware, async (req, res) => {
 // Get all logs for the authenticated user
 router.get("/", authMiddleware, async (req, res) => {
 	try {
-		const logs = await TimeLog.find({ user: req.user }).populate("task");
+		const logs = await TimeLog.find({ user: req.user }).populate({
+			path: "task",
+			select: "title",
+		});
 		res.json(logs);
 	} catch (err) {
 		res.status(500).json({ error: err.message });

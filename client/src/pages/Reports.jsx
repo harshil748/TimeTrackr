@@ -37,10 +37,15 @@ const Reports = () => {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 
+			if (!res.data || !Array.isArray(res.data)) {
+				console.error("Invalid response format:", res.data);
+				return;
+			}
+
 			const totals = {};
 			res.data.forEach((log) => {
 				const taskName = log.task?.title || "Unknown Task";
-				totals[taskName] = (totals[taskName] || 0) + log.duration;
+				totals[taskName] = (totals[taskName] || 0) + (log.duration || 0);
 			});
 
 			const chartData = Object.entries(totals).map(([task, duration], i) => ({
@@ -56,19 +61,24 @@ const Reports = () => {
 			console.error("Failed to load logs:", err);
 		}
 	};
-    const getWeeklyData = (logs) => {
-			const dayMap = {};
+	const getWeeklyData = (logs) => {
+		const dayMap = {};
 
-			logs.forEach((log) => {
-				const date = new Date(log.startTime).toLocaleDateString();
-				dayMap[date] = (dayMap[date] || 0) + log.duration;
-			});
+		logs.forEach((log) => {
+			if (!log.startTime || !log.duration) {
+				console.warn("Skipping invalid log entry:", log);
+				return;
+			}
 
-			return Object.entries(dayMap).map(([date, duration]) => ({
-				date,
-				hours: Math.round((duration / 3600) * 100) / 100,
-			}));
-		};
+			const date = new Date(log.startTime).toLocaleDateString();
+			dayMap[date] = (dayMap[date] || 0) + log.duration;
+		});
+
+		return Object.entries(dayMap).map(([date, duration]) => ({
+			date,
+			hours: Math.round((duration / 3600) * 100) / 100,
+		}));
+	};
 	useEffect(() => {
 		fetchLogs();
 	}, []);
@@ -150,8 +160,8 @@ const Reports = () => {
 						>
 							Export as CSV
 						</CSVLink>
-                    </div>
-                    
+					</div>
+
 					{logs.length === 0 ? (
 						<p className="text-gray-500">No logs found.</p>
 					) : (
