@@ -56,9 +56,9 @@ const Signup = () => {
 
 	return (
 		<div className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen">
-			<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-100 to-pink-200">
-				<div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
-					<h2 className="text-2xl font-bold text-center mb-6 text-purple-600">
+			<div className="bg-white dark:bg-gray-900 min-h-screen flex items-center justify-center">
+				<div className="bg-white dark:bg-gray-800 p-8 rounded shadow-md w-full max-w-sm">
+					<h2 className="bg-white dark:bg-gray-800 text-2xl font-bold text-center mb-6 text-purple-600">
 						Sign Up
 					</h2>
 					<form onSubmit={handleSubmit} className="space-y-4">
@@ -66,7 +66,7 @@ const Signup = () => {
 							name="name"
 							type="text"
 							placeholder="Full Name"
-							className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+							className="bg-white dark:bg-gray-800 w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
 							value={form.name}
 							onChange={handleChange}
 							required
@@ -75,7 +75,7 @@ const Signup = () => {
 							name="email"
 							type="email"
 							placeholder="Email"
-							className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+							className="bg-white dark:bg-gray-800 w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
 							value={form.email}
 							onChange={handleChange}
 							required
@@ -84,7 +84,7 @@ const Signup = () => {
 							name="password"
 							type="password"
 							placeholder="Password"
-							className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+							className="bg-white dark:bg-gray-800 w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
 							value={form.password}
 							onChange={handleChange}
 							required
