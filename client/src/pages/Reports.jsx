@@ -90,7 +90,7 @@ const Reports = () => {
 				<h1 className="text-2xl font-bold">Time Reports</h1>
 
 				{/* Bar Chart */}
-				<div className="bg-white p-4 rounded shadow">
+				<div className="bg-white dark:bg-black p-4 rounded shadow">
 					<h2 className="text-lg font-semibold mb-2">Time Spent per Task</h2>
 					<ResponsiveContainer width="100%" height={300}>
 						<BarChart data={data}>
@@ -104,7 +104,7 @@ const Reports = () => {
 				</div>
 
 				{/* Pie Chart */}
-				<div className="bg-white p-4 rounded shadow">
+				<div className="bg-white dark:bg-black p-4 rounded shadow">
 					<h2 className="text-lg font-semibold mb-2">
 						Proportional Time Distribution
 					</h2>
@@ -130,7 +130,7 @@ const Reports = () => {
 				</div>
 
 				{/* Weekly Bar Chart */}
-				<div className="bg-white p-4 rounded shadow">
+				<div className="bg-white dark:bg-black p-4 rounded shadow">
 					<h2 className="text-lg font-semibold mb-2">Weekly Time Tracker</h2>
 					<ResponsiveContainer width="100%" height={300}>
 						<BarChart data={weekly}>
@@ -144,7 +144,7 @@ const Reports = () => {
 				</div>
 
 				{/* Logs History */}
-				<div className="bg-white p-4 rounded shadow overflow-x-auto">
+				<div className="bg-white dark:bg-black p-4 rounded shadow overflow-x-auto">
 					<h2 className="text-lg font-semibold mb-4">Log History</h2>
 
 					<div className="flex justify-end mb-4">
@@ -163,11 +163,11 @@ const Reports = () => {
 					</div>
 
 					{logs.length === 0 ? (
-						<p className="text-gray-500">No logs found.</p>
+						<p className="text-white-500">No logs found.</p>
 					) : (
 						<table className="min-w-full text-sm">
 							<thead>
-								<tr className="bg-gray-100 text-left">
+								<tr className="bg-white-100 text-left">
 									<th className="p-2">Task</th>
 									<th className="p-2">Start</th>
 									<th className="p-2">End</th>
@@ -176,7 +176,7 @@ const Reports = () => {
 							</thead>
 							<tbody>
 								{logs.map((log) => (
-									<tr key={log._id} className="border-b hover:bg-gray-50">
+									<tr key={log._id} className="border-b hover:bg-gray-100">
 										<td className="p-2">{log.task?.title || "Untitled"}</td>
 										<td className="p-2">
 											{new Date(log.startTime).toLocaleString()}
