@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 const Login = () => {
 	const navigate = useNavigate();
-	const [email, setEmail] = useState("harshil@example.com");
-	const [password, setPassword] = useState("mypassword");
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
 
@@ -30,7 +31,7 @@ const Login = () => {
 
 	return (
 		<div className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-purple-200">
-			<div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
+			<div className="bg-white dark:bg-gray-800 p-8 rounded shadow-md w-full max-w-sm">
 				<h2 className="text-2xl font-bold text-center mb-6 text-blue-600">
 					Login
 				</h2>
@@ -38,7 +39,7 @@ const Login = () => {
 					<input
 						type="email"
 						placeholder="Email"
-						className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+						className="bg-white dark:bg-gray-800 w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
 						required
@@ -46,7 +47,7 @@ const Login = () => {
 					<input
 						type="password"
 						placeholder="Password"
-						className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+						className="bg-white dark:bg-gray-800 w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
 						required
