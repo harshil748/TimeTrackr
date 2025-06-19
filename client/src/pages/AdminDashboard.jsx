@@ -56,65 +56,66 @@ const AdminDashboard = () => {
 	};
 
 	return (
-		<div className="p-6 max-w-6xl mx-auto">
-			<h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
-			{error && <p className="text-red-500">{error}</p>}
-			<div className="grid grid-cols-2 gap-8">
-				<div>
-					<h2 className="text-lg font-semibold mb-2">Users</h2>
-					<ul className="space-y-2">
-						{users.map((u) => (
-							<li
-								key={u._id}
-								className="border p-2 rounded flex justify-between"
-							>
-								<div>
-									<p>
-										<strong>{u.name}</strong> ({u.email})
-									</p>
-									<p className="text-xs text-gray-500">Hash: {u.password}</p>
-								</div>
-								<div className="flex gap-2">
-									<button
-										className="text-blue-500 underline"
-										onClick={() => fetchTasks(u._id)}
-									>
-										View Tasks
-									</button>
-									<button
-										className="text-red-500 underline"
-										onClick={() => deleteUser(u._id)}
-									>
-										Delete
-									</button>
-								</div>
-							</li>
-						))}
-					</ul>
-				</div>
+  <div className="min-h-screen bg-gray-100 p-6">
+    <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-md p-6">
+      <h1 className="text-3xl font-bold mb-6 text-purple-700 text-center">Admin Dashboard</h1>
+      {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
+      <div className="grid md:grid-cols-2 gap-8">
+        {/* Users List */}
+        <div>
+          <h2 className="text-xl font-semibold mb-4 text-gray-700">Users</h2>
+          <div className="space-y-4">
+            {users.map((u) => (
+              <div
+                key={u._id}
+                className="border border-gray-200 bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition"
+              >
+                <div className="mb-2">
+                  <p className="font-bold text-lg">{u.name}</p>
+                  <p className="text-sm text-gray-600">{u.email}</p>
+                  <p className="text-xs text-gray-400 break-all">Hash: {u.password}</p>
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm"
+                    onClick={() => fetchTasks(u._id)}
+                  >
+                    View Tasks
+                  </button>
+                  <button
+                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-sm"
+                    onClick={() => deleteUser(u._id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
-				<div>
-					<h2 className="text-lg font-semibold mb-2">
-						{selectedUser ? "Tasks for Selected User" : "Select a User"}
-					</h2>
-					{tasks.length === 0 ? (
-						<p className="text-gray-500">No tasks found.</p>
-					) : (
-						<ul className="space-y-2">
-							{tasks.map((t) => (
-								<li key={t._id} className="border p-2 rounded">
-									<p>
-										<strong>{t.title}</strong>
-									</p>
-									<p className="text-sm text-gray-600">{t.description}</p>
-								</li>
-							))}
-						</ul>
-					)}
-				</div>
-			</div>
-		</div>
-	);
+        {/* Tasks List */}
+        <div>
+          <h2 className="text-xl font-semibold mb-4 text-gray-700">
+            {selectedUser ? "Tasks for Selected User" : "Select a User"}
+          </h2>
+          {tasks.length === 0 ? (
+            <p className="text-gray-500 text-sm italic">No tasks found.</p>
+          ) : (
+            <div className="space-y-4">
+              {tasks.map((t) => (
+                <div key={t._id} className="bg-white border border-gray-200 p-4 rounded-lg shadow-sm">
+                  <p className="font-semibold text-gray-800">{t.title}</p>
+                  <p className="text-sm text-gray-600">{t.description}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+);
 };
 
 export default AdminDashboard;
