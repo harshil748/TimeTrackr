@@ -50,7 +50,7 @@ const Timer = ({ taskId }) => {
 	};
 
 	return (
-		<div className="bg-gray-100 p-3 rounded mt-2">
+		<div className="bg-gray-100 dark:bg-gray-800 p-3 rounded mt-2">
 			<p className="text-sm font-medium">Timer: {duration}s</p>
 			<div className="mt-2 flex space-x-2">
 				<button

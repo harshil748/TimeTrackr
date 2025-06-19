@@ -38,21 +38,25 @@ const TaskList = ({ userId, onSelectTask, onCompleteTask }) => {
 	}, []);
 
 	return (
-		<div className="p-4 bg-white rounded shadow mb-6">
-			<h2 className="text-lg font-semibold mb-2">Your Tasks</h2>
-			<form onSubmit={handleSubmit} className="mb-4 flex flex-col gap-2">
+		<div className="bg-white dark:bg-gray-800 p-4 rounded shadow mb-6">
+			<h2 className="bg-white dark:bg-gray-800 text-lg font-semibold mb-2">
+				Your Tasks
+			</h2>
+			<form
+				onSubmit={handleSubmit}
+				className="bg-white dark:bg-gray-800 mb-4 flex flex-col gap-2"
+			>
 				<input
 					type="text"
 					placeholder="Task title"
-					className="p-2 border rounded"
+					className="p-2 border rounded bg-white dark:bg-gray-700 text-black dark:text-white border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-300"
 					value={form.title}
 					onChange={(e) => setForm({ ...form, title: e.target.value })}
 					required
 				/>
-				<input
-					type="text"
-					placeholder="Description"
-					className="p-2 border rounded"
+				<textarea
+					placeholder="Task Description (optional)"
+					className="p-2 border rounded bg-white dark:bg-gray-700 text-black dark:text-white border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-300"
 					value={form.description}
 					onChange={(e) => setForm({ ...form, description: e.target.value })}
 				/>
@@ -72,7 +76,9 @@ const TaskList = ({ userId, onSelectTask, onCompleteTask }) => {
 								className="cursor-pointer"
 							>
 								<strong>{task.title}</strong>
-								<p className="text-sm text-gray-600">{task.description}</p>
+								<p className="bg-white dark:bg-gray-800 text-sm text-gray-600">
+									{task.description}
+								</p>
 								{task.completed && (
 									<span className="text-green-600 text-xs font-semibold">
 										✓ Completed

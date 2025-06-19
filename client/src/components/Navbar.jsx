@@ -12,10 +12,11 @@ const Navbar = () => {
 	}, []);
 
 	const toggleDarkMode = () => {
+		
 		const newMode = !darkMode;
 		setDarkMode(newMode);
 		localStorage.setItem("darkMode", newMode);
-		document.documentElement.classList.toggle("dark", newMode);
+		document.documentElement.classList.toggle("dark");
 	};
 
 	const handleLogout = () => {
