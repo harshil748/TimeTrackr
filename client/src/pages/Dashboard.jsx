@@ -3,9 +3,9 @@ import axios from "axios";
 import Timer from "../components/Timer";
 import Navbar from "../components/Navbar";
 
-
 const Dashboard = () => {
 	const [tasks, setTasks] = useState([]);
+	const [completedTasks, setCompletedTasks] = useState([]);
 	const [form, setForm] = useState({ title: "", description: "" });
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
@@ -17,7 +17,9 @@ const Dashboard = () => {
 			const res = await axios.get("http://localhost:5050/api/tasks", {
 				headers: { Authorization: `Bearer ${token}` },
 			});
-			setTasks(res.data);
+			console.log("Fetched tasks:", res.data); // Debug log
+			setTasks(res.data.filter((task) => !task.completed));
+			setCompletedTasks(res.data.filter((task) => task.completed));
 		} catch (err) {
 			setError("Failed to fetch tasks.");
 		}
@@ -41,6 +43,26 @@ const Dashboard = () => {
 			setError("Failed to create task.");
 		} finally {
 			setLoading(false);
+		}
+	};
+
+	const markTaskComplete = async (taskId) => {
+		try {
+			await axios.put(
+				`http://localhost:5050/api/tasks/${taskId}`,
+				{ completed: true },
+				{
+					headers: { Authorization: `Bearer ${token}` },
+				}
+			);
+			const completedTask = tasks.find((task) => task._id === taskId);
+			setCompletedTasks([
+				...completedTasks,
+				{ ...completedTask, updatedAt: new Date() },
+			]);
+			setTasks(tasks.filter((task) => task._id !== taskId));
+		} catch (err) {
+			setError("Failed to mark task as completed.");
 		}
 	};
 
@@ -98,9 +120,55 @@ const Dashboard = () => {
 									Created at: {new Date(task.createdAt).toLocaleString()}
 								</p>
 								<Timer taskId={task._id} />
+								<div className="mt-2 flex gap-2">
+									<button
+										onClick={() => markTaskComplete(task._id)}
+										className="px-3 py-1 bg-green-500 text-white text-sm rounded hover:bg-green-600"
+									>
+										Complete
+									</button>
+									<button
+										onClick={async () => {
+											try {
+												await axios.delete(
+													`http://localhost:5050/api/tasks/${task._id}`,
+													{
+														headers: { Authorization: `Bearer ${token}` },
+													}
+												);
+												fetchTasks();
+											} catch (err) {
+												setError("Failed to delete task.");
+											}
+										}}
+										className="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600"
+									>
+										Delete
+									</button>
+								</div>
 							</li>
 						))}
 					</ul>
+				)}
+
+				{completedTasks.length > 0 && (
+					<div className="mt-6">
+						<h2 className="text-lg font-semibold mb-2">Completed Tasks</h2>
+						<ul className="space-y-3">
+							{completedTasks.map((task) => (
+								<li
+									key={task._id}
+									className="p-4 bg-gray-100 shadow rounded border border-gray-200"
+								>
+									<h3 className="font-semibold text-lg">{task.title}</h3>
+									<p className="text-sm text-gray-600">{task.description}</p>
+									<p className="text-xs text-gray-400 mt-1">
+										Completed at: {new Date(task.updatedAt).toLocaleString()}
+									</p>
+								</li>
+							))}
+						</ul>
+					</div>
 				)}
 			</div>
 		</div>

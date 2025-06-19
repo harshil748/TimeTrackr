@@ -1,13 +1,26 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const TaskList = ({ userId, onSelectTask }) => {
+const TaskList = ({ userId, onSelectTask, onCompleteTask }) => {
 	const [tasks, setTasks] = useState([]);
 	const [form, setForm] = useState({ title: "", description: "" });
 
 	const fetchTasks = async () => {
 		const res = await axios.get(`http://localhost:5000/api/tasks/${userId}`);
 		setTasks(res.data);
+	};
+
+	const deleteTask = async (id) => {
+		await axios.delete(`http://localhost:5000/api/tasks/${id}`);
+		fetchTasks();
+	};
+
+	const markComplete = async (id) => {
+		await axios.put(`http://localhost:5000/api/tasks/${id}`, {
+			completed: true,
+		});
+		onCompleteTask(id);
+		fetchTasks();
 	};
 
 	const handleSubmit = async (e) => {
@@ -52,13 +65,37 @@ const TaskList = ({ userId, onSelectTask }) => {
 			</form>
 			<ul className="space-y-2">
 				{tasks.map((task) => (
-					<li
-						key={task._id}
-						className="p-2 border rounded hover:bg-gray-100 cursor-pointer"
-						onClick={() => onSelectTask(task)}
-					>
-						<strong>{task.title}</strong>
-						<p className="text-sm text-gray-600">{task.description}</p>
+					<li key={task._id} className="p-2 border rounded">
+						<div className="flex justify-between items-center">
+							<div
+								onClick={() => onSelectTask(task)}
+								className="cursor-pointer"
+							>
+								<strong>{task.title}</strong>
+								<p className="text-sm text-gray-600">{task.description}</p>
+								{task.completed && (
+									<span className="text-green-600 text-xs font-semibold">
+										✓ Completed
+									</span>
+								)}
+							</div>
+							<div className="flex gap-2">
+								{!task.completed && (
+									<button
+										onClick={() => markComplete(task._id)}
+										className="bg-green-500 text-white px-2 py-1 rounded text-sm"
+									>
+										Complete
+									</button>
+								)}
+								<button
+									onClick={() => deleteTask(task._id)}
+									className="bg-red-500 text-white px-2 py-1 rounded text-sm"
+								>
+									Delete
+								</button>
+							</div>
+						</div>
 					</li>
 				))}
 			</ul>

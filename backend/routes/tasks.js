@@ -1,4 +1,4 @@
-const User = require( "../models/User" );
+const User = require("../models/User");
 const express = require("express");
 const router = express.Router();
 const Task = require("../models/Task");
@@ -58,9 +58,29 @@ router.get("/user/:userId", authMiddleware, async (req, res) => {
 router.post("/", authMiddleware, async (req, res) => {
 	try {
 		const { title, description } = req.body;
-		const newTask = new Task({ user: req.user, title, description });
+		const newTask = new Task({
+			user: req.user,
+			title,
+			description,
+			completed: false, // Explicitly set completed to false
+		});
 		const savedTask = await newTask.save();
+		console.log("Task created:", savedTask); // Debug log
 		res.status(201).json(savedTask);
+	} catch (err) {
+		res.status(400).json({ error: err.message });
+	}
+});
+
+router.put("/:id", authMiddleware, async (req, res) => {
+	try {
+		const updatedTask = await Task.findByIdAndUpdate(
+			req.params.id,
+			{ $set: req.body },
+			{ new: true }
+		);
+		console.log("Task updated:", updatedTask); // Debug log
+		res.json(updatedTask);
 	} catch (err) {
 		res.status(400).json({ error: err.message });
 	}
