@@ -10,23 +10,23 @@ const Signup = () => {
 		password: "",
 	});
 	const [error, setError] = useState("");
-    const [ loading, setLoading ] = useState( false );
-    
-    const [users, setUsers] = useState([]);
+	const [loading, setLoading] = useState(false);
 
-		const fetchUsers = async () => {
-			try {
-				const token = localStorage.getItem("token");
-				const res = await axios.get("http://localhost:5050/api/admin/users", {
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				});
-				setUsers(res.data);
-			} catch (err) {
-				setError("Access denied or failed to fetch users.");
-			}
-		};
+	const [users, setUsers] = useState([]);
+
+	const fetchUsers = async () => {
+		try {
+			const token = localStorage.getItem("token");
+			const res = await axios.get("http://localhost:5050/api/admin/users", {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			setUsers(res.data);
+		} catch (err) {
+			setError("Access denied or failed to fetch users.");
+		}
+	};
 
 	const handleChange = (e) => {
 		setForm({ ...form, [e.target.name]: e.target.value });
