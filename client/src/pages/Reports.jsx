@@ -84,7 +84,7 @@ const Reports = () => {
 	}, []);
 
 	return (
-		<div>
+		<div className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen">
 			<Navbar />
 			<div className="p-6 max-w-6xl mx-auto space-y-8">
 				<h1 className="text-2xl font-bold">Time Reports</h1>
