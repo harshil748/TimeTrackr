@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require("../models/User");
 const authMiddleware = require("../middleware/auth");
 
-// Enhanced authMiddleware to check admin privileges
+// authMiddleware to check admin privileges
 const adminAuthMiddleware = async (req, res, next) => {
 	try {
 		console.log("Fetching user with ID:", req.user);
