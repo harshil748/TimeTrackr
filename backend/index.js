@@ -9,8 +9,7 @@ const port = process.env.PORT || 5050;
 
 // Middleware
 app.use(cors());
-app.use( express.json() );
-
+app.use(express.json());
 
 const adminRouter = require("./routes/admin");
 app.use("/api/admin", adminRouter);
