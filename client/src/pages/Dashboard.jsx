@@ -73,12 +73,12 @@ const Dashboard = () => {
 	return (
 		<div className='bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen'>
 			<Navbar />
-			<div className='p-6 max-w-xl mx-auto'>
-				<h1 className='text-2xl font-bold mb-4'>Your Tasks</h1>
+			<div className='p-6 max-w-xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md'>
+				<h1 className='text-2xl font-bold mb-4 bg-white dark:bg-gray-800'>Your Tasks</h1>
 
 				<form
 					onSubmit={handleCreate}
-					className='bg-white p-4 mb-6 rounded shadow'>
+					className='bg-white dark:bg-gray-800 p-4 mb-6 rounded shadow'>
 					<input
 						className='w-full mb-2 p-2 border rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700'
 						type='text'
@@ -110,7 +110,7 @@ const Dashboard = () => {
 						{tasks.map((task) => (
 							<li
 								key={task._id}
-								className='p-4 bg-white shadow rounded border border-gray-200'>
+								className='p-4 bg-white dark:bg-gray-800 shadow rounded border border-gray-200'>
 								<h3 className='font-semibold text-lg'>{task.title}</h3>
 								<p className='text-sm text-gray-600'>{task.description}</p>
 								<p className='text-xs text-gray-400 mt-1'>
@@ -148,12 +148,12 @@ const Dashboard = () => {
 
 				{completedTasks.length > 0 && (
 					<div className='mt-6'>
-						<h2 className='text-lg font-semibold mb-2'>Completed Tasks</h2>
+						<h2 className='bg-white dark:bg-gray-800 text-lg font-semibold mb-2'>Completed Tasks</h2>
 						<ul className='space-y-3'>
 							{completedTasks.map((task) => (
 								<li
 									key={task._id}
-									className='p-4 bg-gray-100 shadow rounded border border-gray-200'>
+									className='p-4 bg-gray-100 dark:bg-gray-800 shadow rounded border border-gray-200'>
 									<h3 className='font-semibold text-lg'>{task.title}</h3>
 									<p className='text-sm text-gray-600'>{task.description}</p>
 									<p className='text-xs text-gray-400 mt-1'>
