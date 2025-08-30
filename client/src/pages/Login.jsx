@@ -30,40 +30,39 @@ const Login = () => {
 	};
 
 	return (
-		<div className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen flex items-center justify-center">
-			<div className="bg-white dark:bg-gray-800 p-8 rounded shadow-md w-full max-w-sm">
-				<h2 className="text-2xl font-bold text-center mb-6 text-blue-600">
+		<div className='bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen flex items-center justify-center'>
+			<div className='bg-white dark:bg-gray-800 p-8 rounded shadow-md w-full max-w-sm'>
+				<h2 className='text-2xl font-bold text-center mb-6 text-blue-600'>
 					Login
 				</h2>
-				<form onSubmit={handleLogin} className="space-y-4">
+				<form onSubmit={handleLogin} className='space-y-4'>
 					<input
-						type="email"
-						placeholder="Email"
-						className="bg-white dark:bg-gray-800 w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+						type='email'
+						placeholder='Email'
+						className='bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-700 w-full px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500'
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
 						required
 					/>
 					<input
-						type="password"
-						placeholder="Password"
-						className="bg-white dark:bg-gray-800 w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+						type='password'
+						placeholder='Password'
+						className='bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-700 w-full px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500'
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
 						required
 					/>
 					<button
-						type="submit"
+						type='submit'
 						disabled={loading}
-						className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
-					>
+						className='w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition'>
 						{loading ? "Logging in..." : "Login"}
 					</button>
-					{error && <p className="text-red-500 text-sm text-center">{error}</p>}
+					{error && <p className='text-red-500 text-sm text-center'>{error}</p>}
 				</form>
-				<p className="text-sm text-center mt-4">
+				<p className='text-sm text-center mt-4'>
 					Don’t have an account?{" "}
-					<Link to="/signup" className="text-blue-500 hover:underline">
+					<Link to='/signup' className='text-blue-500 hover:underline'>
 						Sign Up
 					</Link>
 				</p>
