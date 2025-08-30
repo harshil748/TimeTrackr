@@ -7,16 +7,26 @@ const Navbar = () => {
 
 	useEffect(() => {
 		const savedMode = localStorage.getItem("darkMode") === "true";
-		setDarkMode(savedMode);
-		document.documentElement.classList.add("dark"); // Enforce dark mode globally
-	}, []);
+		setDarkMode( savedMode );
+
+		if ( savedMode ) {
+			document.documentElement.classList.add("dark");
+		} else {
+			document.documentElement.classList.remove("dark");
+		}
+	}, [] );
+	
 
 	const toggleDarkMode = () => {
 		
 		const newMode = !darkMode;
 		setDarkMode(newMode);
 		localStorage.setItem("darkMode", newMode);
-		document.documentElement.classList.toggle("dark");
+		if (newMode) {
+			document.documentElement.classList.add("dark");
+		} else {
+			document.documentElement.classList.remove("dark");
+		}
 	};
 
 	const handleLogout = () => {
